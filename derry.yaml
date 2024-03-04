@@ -1,0 +1,64 @@
+format:
+  - fvm dart format lib .
+  - fvm dart import_sorter:main
+
+build_once: fvm dart run build_runner build --delete-conflicting-outputs
+# Run whenever start working. It will generate Freezed classes
+watch: fvm dart run build_runner watch --delete-conflicting-outputs
+
+slang:
+  - fvm dart run slang
+
+get:
+  - fvm flutter clean
+  - fvm dart pub get
+
+splash:
+  - dart run flutter_native_splash:create
+
+gen:
+  - fvm dart pub get
+  - fvm dart run build_runner build --delete-conflicting-outputs
+
+icon:
+  - fvm dart run flutter_launcher_icons -f flutter_launcher_icons*
+
+build_apk_dev:
+  - fvm flutter clean
+  - fvm dart pub get
+  - fvm dart build apk --flavor dev -t lib/main_dev.dart
+
+build_apk_prod:
+  - fvm flutter clean
+  - fvm flutter pub get
+  - fvm flutter build apk --flavor prod -t lib/main_production.dart
+
+build_appbundle:
+  - fvm flutter build appbundle --flavor prod -t lib/main_production.dart
+
+build_ipa:
+  - fvm flutter build ipa --flavor prod -t lib/main_production.dart
+
+run_dev:
+  - fvm flutter run --release --flavor dev -t lib/main_dev.dart
+
+clean:
+  - fvm flutter clean
+  - fvm dart pub get
+
+purge:
+  - pod deintegrate
+  #- rm Flutter/Flutter.podspec
+  - flutter clean
+  - flutter pub get
+  #- pod install
+  #- flutter run
+
+purge_all:
+  - pod deintegrate
+  - rm Flutter/Flutter.podspec
+  - flutter clean
+  - flutter pub cache repair
+  - flutter pub get
+  #- pod install
+  - flutter run
